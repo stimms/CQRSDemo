@@ -13,5 +13,6 @@ namespace CQRS_Demo.Models
         public string PhoneNumber { get; set; }
         public DateTime ValidFrom { get; set; }
         public int CountryId { get; set; }
+        public int PersonId { get; set; }
     }
 }
