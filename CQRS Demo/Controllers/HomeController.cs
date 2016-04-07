@@ -28,6 +28,41 @@ namespace CQRS_Demo.Controllers
             return View(model);
         }
 
+
+        public ActionResult Index2()
+        {
+            var sql = @"Select AccountExpiry, FirstName, LastName, Street, City, c.Name from users u left outer join 
+			                          persons p on p.Id = u.PersonId left outer join 
+			                          Addresses a on a.PersonId = p.id left outer join 
+			                          Countries c on c.id = a.CountryId
+									  where a.ValidFrom = (select max(ValidFrom) from addresses a1 where a1.PersonId = p.Id)
+                        Order by lastname, firstname";
+            IEnumerable<dynamic> model = new List<dynamic>();
+            using (var connection = GetConnection())
+            {
+                model = connection.Query(sql);
+            }
+            return View("Index", model);
+        }
+
+
+        public ActionResult Index3()
+        {
+            var sql = @"Select AccountExpiry, FirstName, LastName, Street, City, c.Name from users u left outer join 
+			                          persons p on p.Id = u.PersonId left outer join 
+			                          Addresses a on a.PersonId = p.id left outer join 
+			                          Countries c on c.id = a.CountryId
+									  where a.ValidFrom = (select max(ValidFrom) from addresses a1 where a1.PersonId = p.Id) 
+                                         or a.id is null
+                        Order by lastname, firstname";
+            IEnumerable<dynamic> model = new List<dynamic>();
+            using (var connection = GetConnection())
+            {
+                model = connection.Query(sql);
+            }
+            return View("Index", model);
+        }
+
         public ActionResult Populate()
         {
             using (var connection = GetConnection())
