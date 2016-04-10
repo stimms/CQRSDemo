@@ -54,7 +54,7 @@ namespace CQRS_Demo.Controllers
 			                          Countries c on c.id = a.CountryId
 									  where a.ValidFrom = (select max(ValidFrom) from addresses a1 where a1.PersonId = p.Id) 
                                          or a.id is null
-                        Order by lastname, firstname";
+                                      Order by lastname, firstname";
             IEnumerable<dynamic> model = new List<dynamic>();
             using (var connection = GetConnection())
             {
