@@ -1,0 +1,13 @@
+﻿@model CQRS_Demo.Models.PersonName
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+@using (Html.BeginForm(method: FormMethod.Post, controllerName: "User", actionName: "ChangeName"))
+{
+    @Html.Hidden("UserId", (int)(ViewBag.UserId))
+    @Html.EditorForModel()
+    <input type="submit" />
+}
+

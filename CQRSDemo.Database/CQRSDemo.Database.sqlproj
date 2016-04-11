@@ -63,6 +63,7 @@
     <Build Include="Persons.sql" />
     <Build Include="Addresses.sql" />
     <Build Include="Countries.sql" />
+    <Build Include="IndexUserList.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment1.sql" />

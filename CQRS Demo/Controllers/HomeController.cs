@@ -11,11 +11,11 @@ using GenFu;
 
 namespace CQRS_Demo.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
-            var sql = @"Select AccountExpiry, FirstName, LastName, Street, City, c.Name from users u left outer join 
+            var sql = @"Select u.id UserId, AccountExpiry, FirstName, LastName, Street, City, c.Name from users u left outer join 
 			                          persons p on p.Id = u.PersonId left outer join 
 			                          Addresses a on a.PersonId = p.id left outer join 
 			                          Countries c on c.id = a.CountryId
@@ -31,7 +31,7 @@ namespace CQRS_Demo.Controllers
 
         public ActionResult Index2()
         {
-            var sql = @"Select AccountExpiry, FirstName, LastName, Street, City, c.Name from users u left outer join 
+            var sql = @"Select u.id UserId, AccountExpiry, FirstName, LastName, Street, City, c.Name from users u left outer join 
 			                          persons p on p.Id = u.PersonId left outer join 
 			                          Addresses a on a.PersonId = p.id left outer join 
 			                          Countries c on c.id = a.CountryId
@@ -48,12 +48,7 @@ namespace CQRS_Demo.Controllers
 
         public ActionResult Index3()
         {
-            var sql = @"Select AccountExpiry, FirstName, LastName, Street, City, c.Name from users u left outer join 
-			                          persons p on p.Id = u.PersonId left outer join 
-			                          Addresses a on a.PersonId = p.id left outer join 
-			                          Countries c on c.id = a.CountryId
-									  where a.ValidFrom = (select max(ValidFrom) from addresses a1 where a1.PersonId = p.Id) 
-                                         or a.id is null
+            var sql = @"Select * from indexuserlist
                                       Order by lastname, firstname";
             IEnumerable<dynamic> model = new List<dynamic>();
             using (var connection = GetConnection())
@@ -80,11 +75,6 @@ namespace CQRS_Demo.Controllers
             }
 
             return View();
-        }
-
-        private static SqlConnection GetConnection()
-        {
-            return new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
         }
         public ActionResult Contact()
         {
