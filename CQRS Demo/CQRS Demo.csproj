@@ -208,6 +208,7 @@
     </Compile>
     <Compile Include="Handlers\ChangeNameCommandHandler.cs" />
     <Compile Include="Handlers\NameChangedEventHandler.cs" />
+    <Compile Include="Handlers\NameChangedIndexUpdateHandler.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Person.cs" />

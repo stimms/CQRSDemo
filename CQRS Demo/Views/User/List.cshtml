@@ -24,7 +24,7 @@
             $("tbody").html("");
             for(var person of json)
             {
-                $("tbody").append("<tr><td></td><td>" + person.FirstName + "</td><td>" + person.LastName + "</td></tr>");
+                $("tbody").append("<tr><td><a href='/User/Edit/" + person.UserId + "'>Edit</a></td><td>" + person.FirstName + "</td><td>" + person.LastName + "</td></tr>");
             }
         });
     }

@@ -1,4 +1,5 @@
 ﻿using CQRS_Demo.Events;
+using CQRS_Demo.Search;
 using Dapper;
 using MediatR;
 using System;
