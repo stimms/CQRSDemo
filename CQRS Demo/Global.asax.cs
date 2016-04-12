@@ -10,6 +10,7 @@ using MediatR;
 using Autofac.Features.Variance;
 using Autofac.Integration.Mvc;
 using System.Reflection;
+using CQRS_Demo.Handlers;
 
 namespace CQRS_Demo
 {
@@ -21,6 +22,7 @@ namespace CQRS_Demo
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            BuildContainer();
         }
 
         protected void BuildContainer()
@@ -40,6 +42,8 @@ namespace CQRS_Demo
 
             // OPTIONAL: Enable property injection into action filters.
             builder.RegisterFilterProvider();
+
+            builder.RegisterAssemblyTypes(typeof(ChangeNameCommandHandler).Assembly).Where(x => x.Name.EndsWith("Handler")).AsImplementedInterfaces();
 
             RegisterMediatr(builder);
 
