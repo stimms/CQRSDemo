@@ -11,6 +11,10 @@ using Autofac.Features.Variance;
 using Autofac.Integration.Mvc;
 using System.Reflection;
 using CQRS_Demo.Handlers;
+using CQRS_Demo.Search;
+using Dapper;
+using System.Data.Common;
+using System.Data.SqlClient;
 
 namespace CQRS_Demo
 {
@@ -23,6 +27,17 @@ namespace CQRS_Demo
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             BuildContainer();
+
+            BuildIndex();
+        }
+
+        protected void BuildIndex()
+        {
+            var userSearch = new UserSearchEngine();
+            using (var connection = GetConnection())
+            {
+                userSearch.BuildIndex(connection.Query<UserSearchItem>("select u.id userId, firstName, lastName from persons p inner join users u on u.personid = p.id").ToList());
+            }
         }
 
         protected void BuildContainer()
@@ -66,6 +81,10 @@ namespace CQRS_Demo
                 var c = ctx.Resolve<IComponentContext>();
                 return t => (IEnumerable<object>)c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
             });
+        }
+        private DbConnection GetConnection()
+        {
+            return new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
         }
 
     }

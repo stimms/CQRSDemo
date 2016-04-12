@@ -76,6 +76,19 @@ namespace CQRS_Demo.Controllers
 
             return View();
         }
+        public ActionResult PopulateManyUsers()
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Insert<Person>(A.ListOf<Person>(5000));
+                int counter = 1;
+                A.Configure<User>().Fill(x => x.PersonId, () => counter++)
+                                       .Fill(x => x.AccountExpiry).AsFutureDate();
+
+                connection.Insert<User>(A.ListOf<User>(5000));
+            }
+            return RedirectToAction("List", "User");
+        }
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
